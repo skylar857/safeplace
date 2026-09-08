@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Safe Place</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+    <!-- The Interactive Opening Credits -->
+    <div id="opening-credits">
+        <div class="titles">
+            <h2>A safe place...</h2>
+            <h3 class="batman-subtitle">By your 🦇 man</h3>
+        </div>
+        <p class="enter-prompt">[ Come in out of the rain ]</p>
+    </div>
+
+    <div class="scene-container">
+        <!-- Layer 1: The Moving Rain Background -->
+        <video class="bg-video" autoplay loop muted playsinline>
+            <source src="assets/video/rainy_street.mp4" type="video/mp4">
+        </video>
+        
+        <!-- The Room Lighting Overlay -->
+        <div id="ambient-darkness"></div>
+
+        <!-- Layer 2: Your Composited Desk -->
+        <img class="room-overlay" src="assets/images/room_layer.png" alt="Cozy Room">
+
+        <!-- Layer 3: Invisible Clickable Hotspots -->
+        <div id="hotspot-speaker" class="hotspot" title="Play Music"></div>
+        <div id="hotspot-book" class="hotspot" title="Open Book"></div>
+        <div id="hotspot-coffee" class="hotspot" title="Drink Coffee"></div>
+        <div id="hotspot-lamp" class="hotspot" title="Toggle Lamp"></div>
+        
+        <!-- THE SECRET GOTHAM HOTSPOT -->
+        <div id="hotspot-sky" class="hotspot" title="Look Outside"></div>
+
+        <!-- THE STARRY NIGHT PAINTING (On the wall) -->
+        <div id="hotspot-painting" class="hotspot" title="Look at the painting">
+            <img src="assets/images/starry_night.jpg" alt="Starry Night" style="width: 100%; display: block;">
+        </div>
+
+        <!-- THE SECRET BUTTON -->
+        <div id="dont-click-btn">Don't click this.</div>
+
+        <!-- THE FINAL DOOR -->
+        <div id="final-door">Before you leave...</div>
+    </div>
+
+    <!-- The Hidden Poem Modal (Pops up when she clicks the book) -->
+    <div id="poem-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>For M</h2>
+            <div class="poem-text">
+                <p>Midnight rain washing over the quiet city outside</p>
+                <p>A lingering warmth from the freshly poured filter coffee</p>
+                <p>Distant notes of old songs filling the dark space</p>
+                <p>Hours slowing down frame by frame in this room</p>
+                <p>Unread pages waiting patiently under the lamplight</p>
+            </div>
+            
+            <!-- THE NEW PERPETUAL BIRTHDAY COUNTER -->
+            <div id="bday-countdown" style="margin-top: 30px; font-size: 0.9rem; color: #888; font-style: italic; opacity: 0; animation: revealLine 1.5s ease 5.5s forwards;">
+                Waiting for May 23rd: <span id="time-left"></span>
+            </div>
+            
+        </div>
+    </div>
+
+    <!-- The Hidden Music Modal (ARTISTIC 5-SONG COZY CHAPTER PLAYER) -->
+    <div id="music-modal" class="modal hidden">
+        <div class="modal-content music-modal-content">
+            <span class="close-music-btn">&times;</span>
+            
+            <div class="music-player-container">
+                <div class="player-header">
+                    <h3>The Soundtrack of Us</h3>
+                    <p id="now-playing-label">Select a chapter below...</p>
+                </div>
+
+                <!-- Artistic Chapter Tabs -->
+                <div class="chapter-tabs">
+                    <button class="chapter-tab" onclick="playChapter('sundari', event)" data-song="sundari">
+                        <span class="chapter-num">I</span>
+                        <span class="chapter-title">Sundari: A Habit of Us</span>
+                    </button>
+                    <button class="chapter-tab" onclick="playChapter('enadhuyire', event)" data-song="enadhuyire">
+                        <span class="chapter-num">II</span>
+                        <span class="chapter-title">Enadhuyire: Safe in Your Arms</span>
+                    </button>
+                    <button class="chapter-tab" onclick="playChapter('kurukuru', event)" data-song="kurukuru">
+                        <span class="chapter-num">III</span>
+                        <span class="chapter-title">Kuru Kuru: Those Quiet Glances</span>
+                    </button>
+                    <button class="chapter-tab" onclick="playChapter('rathinamo', event)" data-song="rathinamo">
+                        <span class="chapter-num">IV</span>
+                        <span class="chapter-title">Rathinamo: Close to My Heart</span>
+                    </button>
+                    <button class="chapter-tab" onclick="playChapter('something', event)" data-song="something">
+                        <span class="chapter-num">V</span>
+                        <span class="chapter-title">Something Abt You, Madhu Maa</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- The Hidden Painting Modal -->
+    <div id="painting-modal" class="modal hidden">
+        <div class="modal-content" style="background: transparent; border: none; box-shadow: none; display: flex; flex-direction: column; align-items: center;">
+            <span class="close-painting-btn close-btn" style="right: 20px; top: 20px;">&times;</span>
+            
+            <!-- High-Res Starry Night -->
+            <img src="assets/images/starry_night.jpg" alt="Starry Night Full" style="max-width: 80vw; max-height: 60vh; border: 8px solid #1a1512; border-radius: 2px; box-shadow: 0 0 50px rgba(0,0,0,0.9);">
+            
+            <!-- The Caption -->
+            <p style="margin-top: 25px; font-style: italic; color: #d4af37; letter-spacing: 1px; font-size: 1.1rem; text-align: center;">
+                "I know nothing with any certainty, but the sight of the stars makes me dream." <br>
+                <span style="font-size: 0.9rem; color: #888;">— Vincent van Gogh</span>
+            </p>
+        </div>
+    </div>
+
+    <!-- THE FINAL BLACK SCREEN -->
+    <div id="final-screen" class="hidden">
+        <p id="final-text"></p>
+    </div>
+
+    <!-- ======================= -->
+    <!-- SOUND DESIGN & MUSIC ASSETS -->
+    <!-- ======================= -->
+    <audio id="sfx-rain" src="assets/audio/rain_sound.mp3" loop></audio>
+    <audio id="sfx-pages" src="assets/audio/paper_turn.mp3"></audio>
+    <audio id="sfx-coffee" src="assets/audio/coffe_pour.mp3"></audio>
+
+    <!-- The 5 Cozy Chapter Audio Files (Make sure files match these names or update the paths) -->
+    <audio id="audio-sundari" loop src="assets/audio/sundari.mp3"></audio>
+    <audio id="audio-enadhuyire" loop src="assets/audio/enadhuyire.mp3"></audio>
+    <audio id="audio-kurukuru" loop src="assets/audio/kurukuru.mp3"></audio>
+    <audio id="audio-rathinamo" loop src="assets/audio/rathinamo.mp3"></audio>
+    <audio id="audio-something" loop src="assets/audio/something_abt_you.mp3"></audio>
+
+    <script src="script.js"></script>
+</body>
+</html>
