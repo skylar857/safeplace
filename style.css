@@ -1,4 +1,6 @@
-/* Reset everything */
+/* =========================================
+   1. RESET & BASE
+========================================= */
 * {
     margin: 0;
     padding: 0;
@@ -11,32 +13,40 @@ body {
     font-family: 'Georgia', serif;
 }
 
-/* Master Container */
+/* =========================================
+   2. SCENE & LAYERS (WITH THE BUG FIX)
+========================================= */
 .scene-container {
-    position: relative;
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100vw;
     height: 100vh;
+    overflow: hidden;
 }
 
 /* Layer 1: Video */
 .bg-video {
-    position: absolute;
+    position: absolute !important;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    width: 100vw !important;
+    height: 100vh !important;
     object-fit: cover;
     z-index: 1;
 }
 
-/* Layer 2: The Desk */
+/* Layer 2: The Desk (Fixed as a Background Image) */
 .room-overlay {
-    position: absolute;
+    position: absolute !important;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    width: 100vw !important;
+    height: 100vh !important;
+    background-image: url('assets/images/room_layer.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     z-index: 2;
     pointer-events: none; 
 }
@@ -55,13 +65,15 @@ body {
     box-shadow: 0 0 15px rgba(255, 215, 0, 0.2); 
 }
 
-/* UPDATED POSITIONS */
+/* HOTSPOT POSITIONS */
 #hotspot-speaker { top: 57%; left: 33%; width: 8%; height: 12%; }
 #hotspot-coffee { top: 59%; left: 48%; width: 4%; height: 7%; }
 #hotspot-book { top: 59%; left: 54%; width: 10%; height: 10%; }
 #hotspot-lamp { top: 38%; left: 63%; width: 9%; height: 12%; } 
 
-/* Popup Modal Styling */
+/* =========================================
+   3. POPUP MODALS
+========================================= */
 .modal {
     position: absolute;
     top: 0; left: 0; width: 100vw; height: 100vh;
@@ -74,7 +86,7 @@ body {
 }
 
 .hidden {
-    display: none;
+    display: none !important;
 }
 
 .modal-content {
@@ -109,9 +121,10 @@ body {
     color: #fff;
 }
 
-/* --- CINEMATIC FEATURES --- */
-
-/* 1. Interactive Opening Credits */
+/* =========================================
+   4. CINEMATIC FEATURES
+========================================= */
+/* Interactive Opening Credits */
 #opening-credits {
     position: absolute;
     inset: 0;
@@ -161,7 +174,7 @@ body {
     visibility: hidden !important;
 }
 
-/* 2. Interactive Lamp */
+/* Interactive Lamp */
 #ambient-darkness {
     position: absolute;
     inset: 0;
@@ -175,7 +188,7 @@ body.lights-out #ambient-darkness {
     opacity: 1;
 }
 
-/* 3. The Typewriter / Line Fade Effect */
+/* The Typewriter / Line Fade Effect */
 .poem-text p {
     opacity: 0;
     transform: translateY(10px);
@@ -193,7 +206,7 @@ body.lights-out #ambient-darkness {
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* 4. THE DISTANT BAT-SIGNAL */
+/* THE DISTANT BAT-SIGNAL */
 #hotspot-sky { 
     top: 20%; 
     left: 28%; 
@@ -211,7 +224,7 @@ body.lights-out #ambient-darkness {
     100% { opacity: 0.7; transform: scale(1.2); box-shadow: 0 0 25px rgba(255, 235, 100, 0.6); }
 }
 
-/* 5. The Starry Night Wall Painting */
+/* The Starry Night Wall Painting */
 #hotspot-painting { 
     top: 22%; 
     left: 78%; 
@@ -230,9 +243,10 @@ body.lights-out #ambient-darkness {
     opacity: 1; 
 }
 
-/* --- THE NEW ENDING FEATURES --- */
-
-/* 7. The Secret Button */
+/* =========================================
+   5. ENDING FEATURES
+========================================= */
+/* The Secret Button */
 #dont-click-btn {
     position: absolute;
     bottom: 20px;
@@ -248,7 +262,7 @@ body.lights-out #ambient-darkness {
     color: rgba(255, 255, 255, 0.8);
 }
 
-/* 8. The Final Door / Before You Leave Button */
+/* The Final Door / Before You Leave Button */
 #final-door {
     position: absolute;
     bottom: 20px;
@@ -266,7 +280,7 @@ body.lights-out #ambient-darkness {
 }
 
 /* =========================================
-   BEFORE YOU LEAVE CINEMATIC OVERLAY
+   6. BEFORE YOU LEAVE OVERLAY (NEW)
 ========================================= */
 #before-leave-overlay {
     position: fixed;
@@ -306,7 +320,7 @@ body.lights-out #ambient-darkness {
     text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
 }
 
-/* Legacy Final Screen (kept just in case) */
+/* Legacy Final Screen (Kept as fallback just in case) */
 #final-screen {
     position: fixed;
     top: 0; left: 0; width: 100vw; height: 100vh;
@@ -334,7 +348,9 @@ body.lights-out #ambient-darkness {
     transition: opacity 1.5s ease;
 }
 
-/* --- ARTISTIC COZY CHAPTER MUSIC PLAYER STYLING --- */
+/* =========================================
+   7. ARTISTIC COZY CHAPTER MUSIC PLAYER
+========================================= */
 .music-modal-content {
     background: linear-gradient(145deg, #12100e, #1a1714) !important;
     border: 1px solid rgba(212, 175, 55, 0.2) !important;
@@ -373,7 +389,6 @@ body.lights-out #ambient-darkness {
     margin: 0;
 }
 
-/* Chapter Tucked-In Tabs */
 .chapter-tabs {
     display: flex;
     flex-direction: column;
@@ -400,7 +415,6 @@ body.lights-out #ambient-darkness {
     transform: translateX(4px);
 }
 
-/* Active Playing State */
 .chapter-tab.active {
     background: rgba(212, 175, 55, 0.15);
     border-color: #d4af37;
