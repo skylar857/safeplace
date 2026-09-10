@@ -34,8 +34,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const skyHotspot = document.getElementById("hotspot-sky");
     const dontClickBtn = document.getElementById("dont-click-btn");
     const finalDoor = document.getElementById("final-door");
-    const finalScreen = document.getElementById("final-screen");
-    const finalText = document.getElementById("final-text");
 
     // Music Modal Open/Close
     if (speakerHotspot && musicModal) {
@@ -220,42 +218,86 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // --- 6. THE FINAL LETTER SEQUENCE ---
-    const letterLines = [
-        "I used to think movies exaggerated how it feels to find someone who just gets you.",
-        "But then we started talking.",
-        "The 3 AM texts... the old melodies... the way my chaotic mind just goes completely quiet when I'm with you.",
-        "Enakku eppadi solradhu nu therila...",
-        "But every single day, I catch myself waiting for your name to pop up on my screen.",
-        "You've unknowingly become my safe place.",
-        "So, I wanted to build one for you.",
-        "Whenever the world gets too heavy, or you just need to breathe...",
-        "Inge vandhudu.",
-        "I'll keep the coffee warm. And I'll always be right here.",
-        "— your 🦇 man"
-    ];
+    // --- 6. BEFORE YOU LEAVE CINEMATIC LYRIC OVERLAY ---
+    const beforeLeaveOverlay = document.getElementById("before-leave-overlay");
+    const beforeLeaveAudio = document.getElementById("audio-before-leave");
+    const blLines = document.querySelectorAll(".bl-line");
 
-    const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+    if (finalDoor && beforeLeaveOverlay && beforeLeaveAudio) {
+        
+        // Dynamically applying styles so the overlay looks perfectly cinematic 
+        beforeLeaveOverlay.style.opacity = '0';
+        beforeLeaveOverlay.style.transition = 'opacity 2s ease';
+        beforeLeaveOverlay.style.position = 'fixed';
+        beforeLeaveOverlay.style.top = '0';
+        beforeLeaveOverlay.style.left = '0';
+        beforeLeaveOverlay.style.width = '100vw';
+        beforeLeaveOverlay.style.height = '100vh';
+        beforeLeaveOverlay.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
+        beforeLeaveOverlay.style.zIndex = '9999';
+        beforeLeaveOverlay.style.display = 'flex';
+        beforeLeaveOverlay.style.flexDirection = 'column';
+        beforeLeaveOverlay.style.justifyContent = 'center';
+        beforeLeaveOverlay.style.alignItems = 'center';
+        
+        blLines.forEach(line => {
+            line.style.opacity = '0';
+            line.style.transform = 'translateY(20px)';
+            line.style.transition = 'opacity 1.5s ease, transform 1.5s ease';
+            line.style.color = '#fff';
+            line.style.fontSize = '1.4rem';
+            line.style.fontStyle = 'italic';
+            line.style.margin = '15px 0';
+            line.style.letterSpacing = '1px';
+        });
 
-    if (finalDoor && finalScreen && finalText) {
-        finalDoor.addEventListener('click', async () => {
-            finalScreen.classList.remove('hidden');
-            setTimeout(() => finalScreen.classList.add('active'), 50); 
-            
-            await sleep(2500); 
+        // Ensure it doesn't block clicks when hidden
+        beforeLeaveOverlay.style.pointerEvents = 'none';
 
-            for (let i = 0; i < letterLines.length; i++) {
-                finalText.innerText = letterLines[i];
-                finalText.style.opacity = 1; 
-                
-                let displayTime = (i === letterLines.length - 1) ? 5000 : 3000;
-                await sleep(displayTime); 
-                
-                if (i < letterLines.length - 1) {
-                    finalText.style.opacity = 0; 
-                    await sleep(1500); 
+        finalDoor.addEventListener('click', () => {
+            // 1. Pause any chapter music currently playing
+            for (let key in audioTracks) {
+                if (audioTracks[key]) {
+                    audioTracks[key].pause();
                 }
             }
+            
+            // 2. Unhide the overlay and fade it in
+            beforeLeaveOverlay.classList.remove('hidden');
+            beforeLeaveOverlay.style.pointerEvents = 'auto';
+            
+            setTimeout(() => {
+                beforeLeaveOverlay.style.opacity = '1';
+                
+                // 3. Play the dedicated Sundari track
+                beforeLeaveAudio.currentTime = 0;
+                beforeLeaveAudio.play().catch(e => console.log("Audio play blocked", e));
+                
+                // 4. Reveal lyrics sequentially based on data-delay
+                blLines.forEach(line => {
+                    const delay = parseInt(line.getAttribute('data-delay') || '0', 10);
+                    setTimeout(() => {
+                        line.style.opacity = '1';
+                        line.style.transform = 'translateY(0)';
+                    }, delay);
+                });
+            }, 50);
+
+            // 5. Fade gently back to the cozy room once the audio ends
+            beforeLeaveAudio.onended = () => {
+                beforeLeaveOverlay.style.opacity = '0';
+                beforeLeaveOverlay.style.pointerEvents = 'none';
+                
+                setTimeout(() => {
+                    beforeLeaveOverlay.classList.add('hidden');
+                    
+                    // Reset lyric styles so it works perfectly if clicked again
+                    blLines.forEach(line => {
+                        line.style.opacity = '0';
+                        line.style.transform = 'translateY(20px)';
+                    });
+                }, 2000); // Wait for the 2-second fade-out
+            };
         });
     }
 });

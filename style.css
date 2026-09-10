@@ -248,7 +248,7 @@ body.lights-out #ambient-darkness {
     color: rgba(255, 255, 255, 0.8);
 }
 
-/* 8. The Final Letter */
+/* 8. The Final Door / Before You Leave Button */
 #final-door {
     position: absolute;
     bottom: 20px;
@@ -265,6 +265,48 @@ body.lights-out #ambient-darkness {
     color: white; 
 }
 
+/* =========================================
+   BEFORE YOU LEAVE CINEMATIC OVERLAY
+========================================= */
+#before-leave-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.95);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 2s ease;
+}
+
+.bl-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.bl-line {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 1.5s ease, transform 1.5s ease;
+    color: #fff;
+    font-size: 1.5rem;
+    font-family: 'Georgia', serif;
+    font-style: italic;
+    margin: 15px 0;
+    letter-spacing: 1.5px;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+/* Legacy Final Screen (kept just in case) */
 #final-screen {
     position: fixed;
     top: 0; left: 0; width: 100vw; height: 100vh;
